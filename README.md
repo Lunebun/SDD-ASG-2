@@ -3,11 +3,20 @@ Solutions Design and Development (2022)
 
 ## Features to implement
 > Requirements needed to be implemented
-1. 
-
-## Ideas and work allocation
-> Possible ideas of implementation
-1. 
+1. **Display Main Menu** 
+   - Start New Game (20x20 Board, 2 buildings randomly selected from 5)
+   - Load Saved Game
+   - Display High Scores
+   - Exit Game
+2. **Playing the Game** 
+   - Build a Building (refer to doc for requirements)
+   - See Current Score
+   - Save Current Game
+   - Exit to Main Menu
+1. **End of Game**
+   - Calculate and Display Score
+   - If Highscore, Prompt user for Name (Update Highscore)
+   - Exit to Main Menu
 
 ## Misc
 > Naming Conventions, Git, References & Credits

@@ -17,6 +17,8 @@ Solutions Design and Development (2022)
    - Calculate and Display Score
    - If Highscore, Prompt user for Name (Update Highscore)
    - Exit to Main Menu
+   
+## Additional Features   
 
 ## Misc
 > Naming Conventions, Git, References & Credits

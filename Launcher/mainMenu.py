@@ -33,7 +33,7 @@ def print_menu(print_content, menu_level):
 # it then runs the corresponding function
 def main_menu():
     menu_list = ["Start new game","Load saved game","Show high scores","Choose city size","Choose building pool"]
-    building_list = ["HSE","BCH","SHP","FAC","HWY"]
+    building_list = []
     new_turn = 1
     city_list =[[" "," "," "," "],[" "," "," "," "],[" "," "," "," "],[" "," "," "," "]]
 

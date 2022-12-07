@@ -62,9 +62,9 @@ def check_user_str(input_checking):
 
 #This function checks for the validity of the user's input
 def check_input_validity(building_position, city_structure):
-    #check if user input is more than 2 string
+    #check if user input is more than 3 string
     try:
-        if len(building_position) > 2 or len(building_position) == 1:
+        if len(building_position) > 3 or len(building_position) == 1:
             return -1, -1
         
         building_location = building_position.upper()
@@ -76,13 +76,19 @@ def check_input_validity(building_position, city_structure):
                 return -1,-1
         else:
             return -1,-1
-        
+
+        conversion = str(building_location[1])
+        conversion2 = str(building_location[2])
+
+        add = conversion + conversion2
+
+        converted_row_int = int(add)
         #Check interger versus city size, return error code if it exceeds city size
-        converted_row = check_user_int(building_location[1])
+        converted_row = check_user_int(converted_row_int)
         if converted_row > len(city_structure):
             return -1,-1
-    
         return converted_row, converted_col
+        
     except:
         print("Please enter a proper position.")
         return -1,-1
@@ -121,20 +127,20 @@ def print_city_grid(city_data, buildings_selected, remaining_buildings):
     for cols in range(len(city_data[0])):
         print('{:^5}'.format(chr(assigned_alpha)), end = " ") 
         assigned_alpha += 1
-    for i in range(len(buildings_selected)):
-        print("{:>5}".format(buildings_selected[i]), end = " ")
+    ##for i in range(len(buildings_selected)):
+        ##print("{:>5}".format(buildings_selected[i]), end = " ")
     print()
     print("  +" +(( "-"*5 + '+')* len(city_data[0])), end = " ")
     for i in range(len(buildings_selected)):
         current_building_amount = remaining_buildings.count(buildings_selected[i])
-        print("{:^5}".format(current_building_amount), end = " ")
+        ##print("{:^5}".format(current_building_amount), end = " ")
     print()
 
     # Starting out, we label the rows of the city and we used to range 1 in order to start from 1 instead of 0
     # We then print the row number onto the side of the city, etc. 1, 2, 3, 4...
     # We then print out the rest of the city using the for loop for each specific space of the city, relative to size of city (len(city_list))
     for rows in range(len(city_data)):
-        print(" {}|".format(rows+1), end='')
+        print(" {:1}|".format(rows+1), end='')
         for cols in range(len(city_data[0])):
             print("{:^5}|".format(city_data[rows][cols]), end = "")
         print()

@@ -76,7 +76,7 @@ def check_input_validity(building_position, city_structure):
                 return -1,-1
         else:
             return -1,-1
-
+        
         conversion = str(building_location[1])
         conversion2 = str(building_location[2])
 
@@ -169,9 +169,22 @@ def see_remaining_buildings():
 
     return
 
-def save_current_game():
+#This functions saves the current state of the game and places the info onto a CSV file
+def save_current_game(current_city_grid, current_turn, building_grids):
+    try:
+        datafile = open("savedgame.csv", "w")  
+        datafile.write(str(current_turn)+",\n")
+        for rows in current_city_grid:
+            for cols in rows:
+                datafile.write(cols + ",")
+            datafile.write("\n")
 
-    return
+        for rows in building_grids:
+            datafile.write(rows + ",")
+
+        datafile.close()
+    except IOError:
+        print("Unable to save game")
 
 def print_menu(print_content, menu_level):
     for choice, menu_selection in enumerate(print_content, start = 1):

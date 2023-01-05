@@ -71,6 +71,7 @@ def check_input_validity(building_position, city_structure):
         #Check if there is a alphabet in user input
         alpha_check = building_location[0].isalpha()
         if alpha_check == True:
+
             converted_col = ord(building_location[0])-65 #This is changing the building_location[0] to an ascii number
             if converted_col < 0 or converted_col > 25:
                 return -1,-1
@@ -161,10 +162,6 @@ def high_score():
 
     return
 
-def start_game():
-
-    return 
-
 def see_remaining_buildings():
 
     return
@@ -198,9 +195,88 @@ def print_menu(print_content, menu_level):
     user_input = check_user_int(input("\nYour Choice? "))
     return user_input
 
-def display_current_score():
+def display_current_score(city_layout):
+    total_score = 0
+    total_residential_score = 0
+    total_industry_score = 0
+    total_commercial_score = 0
+    total_park_score = 0
+    total_road_score = 0
 
-    return
+    # Residential Scoring
+    for row in range(len(city_layout)):
+        for col in range(len(city_layout[0])):
+            if city_layout[row][col] == "R":
+                # If next to industry, only get 1 point
+                if city_layout[row][col-1] == "I" or city_layout[row][col+1] == "I" or city_layout[row-1][col] == "I" or city_layout[row+1][col] == "I": 
+                    total_residential_score += 1
+                else:
+                    #Check left for R and C
+                    if city_layout[row][col-1] == "R" or city_layout[row][col-1] == "C": 
+                        total_residential_score += 1
+
+                    #Check left for O
+                    elif city_layout[row][col-1] == "O": 
+                        total_residential_score += 2
+
+                    #Check right for R and C
+                    if city_layout[row][col-1] == "R" or city_layout[row][col+1] == "C": 
+                        total_residential_score += 1
+
+                    #Check right for O
+                    elif city_layout[row][col+1] == "O": 
+                        total_residential_score += 2
+
+                    #Check up for R and C
+                    if city_layout[row][col-1] == "R" or city_layout[row-1][col] == "C": 
+                        total_residential_score += 1
+
+                    #Check up for O
+                    elif city_layout[row-1][col] == "O": 
+                        total_residential_score += 2
+
+                    #Check down for R and C
+                    if city_layout[row][col-1] == "R" or city_layout[row+1][col] == "C": 
+                        total_residential_score += 1
+
+                    #Check down for O
+                    elif city_layout[row+1][col] == "O": 
+                        total_residential_score += 2
+
+    # Industry Scoring
+    for row in range(len(city_layout)):
+        for col in range(len(city_layout[0])):
+            if city_layout[row][col] == "I":
+                total_industry_score += 1
+
+    # Commercial Scoring
+    for row in range(len(city_layout)):
+        for col in range(len(city_layout[0])):
+            if city_layout[row][col] == "C":
+                # If next to commercial, get 1 point
+                if city_layout[row][col-1] == "C" or city_layout[row][col+1] == "C" or city_layout[row-1][col] == "C" or city_layout[row+1][col] == "C": 
+                    total_commercial_score += 1
+
+    # Park Scoring
+    for row in range(len(city_layout)):
+        for col in range(len(city_layout[0])):
+            if city_layout[row][col] == "O":
+                # If next to park, get 1 point
+                if city_layout[row][col-1] == "O" or city_layout[row][col+1] == "O" or city_layout[row-1][col] == "O"or city_layout[row+1][col] == "O": 
+                    total_park_score += 1
+
+    # Road Scoring
+    for row in range(len(city_layout)):
+        for col in range(len(city_layout[0])):
+            if city_layout[row][col] == "*":
+                # If same row as and next to another road, get 1 point
+                if city_layout[row][col-1] == "O": 
+                    total_road_score += 1
+                if city_layout[row][col+1] == "O": 
+                    total_road_score += 1
+
+    total_score = total_residential_score + total_industry_score + total_commercial_score + total_park_score + total_road_score
+    return total_score
 
 # This function lets the user choose the city size
 def choose_city_size(city_grid):
@@ -279,6 +355,7 @@ def start_game(city_content, building_content, current_turn):
             see_remaining_buildings(number_of_buildings, building_content)
         elif user_sub_selection == 4:
             score = display_current_score(city_content, building_content)
+            print("Your current score is:", score)
         elif user_sub_selection == 5:
             save_current_game(city_content, current_turn, building_content) 
             print("Game Saved") 

@@ -321,6 +321,7 @@ def build_building(building_data,city_layout,current_turn):
 
 def start_game(city_content, building_content, current_turn):
     local_building_content = [] #Creates a empty list for deep copy of building_content
+    coins = 16  # Coins start at 16
     for building_copy in building_content:
         local_building_content.append(building_copy)
     number_of_buildings = []
@@ -338,6 +339,8 @@ def start_game(city_content, building_content, current_turn):
     random.shuffle(local_building_content) #This is to randomise the selection of the 2 buildings
     submenu_list = ["See remaining buildings","See current score\n","Save game"]
     print("Turn {}".format(current_turn)) #Display of turn
+    print("Coins:",coins)
+
     print_city_grid(city_content, building_content, number_of_buildings)
 
     building_selection1 = "Build a " + str(local_building_content[0])
@@ -345,12 +348,16 @@ def start_game(city_content, building_content, current_turn):
     submenu_list.insert(0, building_selection1)
     submenu_list.insert(1, building_selection2)
     
-    while current_turn < len(city_content)*len(city_content[0]) + 1:  
+    while current_turn < len(city_content)*len(city_content[0]) + 1:
+        if coins == 0: # If no more coins end game
+            break  
         user_sub_selection = print_menu(submenu_list, False) #The False is important here, it determines whether the Exit is a exit to main menu or exiting
         if user_sub_selection == 1:
-            result, city_content = build_building(local_building_content[0],city_content,current_turn)     
+            result, city_content = build_building(local_building_content[0],city_content,current_turn)
+            coins -= 1     # Decrease coins if building is built
         elif user_sub_selection == 2: 
             result, city_content = build_building(local_building_content[1],city_content,current_turn)    
+            coins -= 1     # Decrease coins if building is built
         elif user_sub_selection == 3:
             see_remaining_buildings(number_of_buildings, building_content)
         elif user_sub_selection == 4:
@@ -382,6 +389,7 @@ def start_game(city_content, building_content, current_turn):
             submenu_list.insert(0, building_selection1)
             submenu_list.insert(1, building_selection2)
 
+        
         print("\nTurn {}".format(current_turn))
         print_city_grid(city_content, building_content, number_of_buildings)
         result = False
@@ -396,7 +404,25 @@ def start_game(city_content, building_content, current_turn):
         for c in range(length_of_city):
             col_list.append(" ")
         city_content.append(col_list)
-        
+    
+    # Buildings that generate coins
+
+    #Industry (I): Each industry generates 1 coin per residential building adjacent to it.
+    for row in range(len(city_content)):
+        for col in range(len(city_content[0])):
+            if city_content[row][col] == "I":
+                # If next to residential, get 1 coin
+                if city_content[row][col-1] == "R" or city_content[row][col+1] == "R" or city_content[row-1][col] == "R" or city_content[row+1][col] == "R": 
+                    coins += 1
+
+    #Commercial (C): Each commercial generates 1 coin per residential adjacent to it.
+    for row in range(len(city_content)):
+        for col in range(len(city_content[0])):
+            if city_content[row][col] == "C":
+                # If next to residential, get 1 coin
+                if city_content[row][col-1] == "R" or city_content[row][col+1] == "R" or city_content[row-1][col] == "R" or city_content[row+1][col] == "R": 
+                    coins += 1
+
     return city_content
 
 # This functions calls the main menu and depending on the choice of the user
